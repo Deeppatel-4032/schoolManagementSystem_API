@@ -9,23 +9,15 @@ const registerSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    },
+    }, 
     password: {
         type: String,
         required: true
-    },
-    com_password : {
-        type : String,
-        required : true
     },
     role : {
         type : String,
         required : true,
         enum : ["master", "principale", "teacher", "student"]
-    },
-    createAt : {
-        type : Date,
-        default : Date.now,
     }
 });
 

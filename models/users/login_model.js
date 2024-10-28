@@ -12,4 +12,4 @@ const loginSchema = new mongoose.Schema({
     }
 });
 
-export const login_Model = mongoose.model("login", loginSchema); 
+export const login_Model = mongoose.model("logins", loginSchema); 

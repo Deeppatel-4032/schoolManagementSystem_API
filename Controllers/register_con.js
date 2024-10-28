@@ -1,47 +1,50 @@
-import { register_Model } from "../models/register_model.js";
+import { register_Model } from "../models/users/register_model.js";
+import bcrypt from "bcrypt";
 
 const getregisterData = async (req, res) => {
   try {
-      const registerData = await register_Model.find({});
-      res.json({
-          status: 200,
-          message: "Data Found all students",
-          data: registerData
-      });
+    const registerData = await register_Model.find({});
+    res.json({
+      status: 200,
+      message: "Data Found all register",
+      data: registerData,
+    });
   } catch (error) {
     res.json({
-        status : 404,
-        error : "No Data Found",
+      status: 404,
+      error: "No Data Found",
     });
   }
-}
+};
 
 const postregisterData = async (req, res) => {
     try {
-        const { userName, email, password, com_password, role, createAt } = req.body;
-        const registerData = new register_Model({
-            userName,
-            email,
-            password,
-            com_password,
-            role,
-            createAt
+        const { userName, email, password, role } = req.body;
+ 
+        const hassPassword = await bcrypt.hash(password, 10);
+
+        const userAdd = new register_Model({
+          userName,
+          email,
+          password: hassPassword,
+          role,
         });
-        const registerAdd = await registerData.save();
-        res.json({
-            status: 200,
-            message: "Data Found all students",
-            data: registerAdd
-        });
+
+        const registerAdd = await userAdd.save();
+        console.log("registerAdd", registerAdd); 
         
-    } catch (error) {
         res.json({
-            status: 404,
-            error: "No Data Found"
+          status: 200,
+          message: "Data Found all register",
+          data: registerAdd,
         });
+    } 
+    catch (error) {
+      res.json({
+          status: 404,
+          error: "No Data Found"
+      });
     }
-}
+};
 
-export { getregisterData, postregisterData }
-
-    
+export { getregisterData, postregisterData };
