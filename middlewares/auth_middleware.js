@@ -5,37 +5,40 @@ const veryfayToken = (roles) => {
     return (req, res, next) => {
         
         try {
-            const token = req.header("Authorization");
+            const authHeader = req.header("authorization");
 
-            if(!token) {
+            // Check if authorization header exists
+            if (!authHeader) {
                 res.json({
-                    status : 404,
-                    message: "Please valid token enter"
+                    status: 401,
+                    message: "Authorization header is missing",
                 });
             }
 
-            const tokenData = token.split(" ")[1];
+            const tokenData = authHeader.split(" ")[1];
             console.log("tokenData >>>", tokenData);
 
-            const decoded = jwt.verify(tokenData, "secret");
-            console.log("decoded >>>", decoded);
+            const decoded = jwt.verify(tokenData, process.env.JWT_SECRET || "#secret");
+            console.log("token >>>", decoded);
 
             if(roles.includes(decoded.role)) {
                 res.json({
                     status : 200,
-                    message: "Authorized",
-                    data: decoded
+                    message: "you are Authorized",
+                    data: decoded,
                 });
                 next();
             }
             else {
                 res.json({
                     status : 404,
-                    message: "Unauthorized"
+                    message: "you are Unauthorized"
                 });
             }
             
         } catch (error) {
+            console.log(error);
+            
             res.json({
                 status : 404,
                 message: "Please valid token enter"

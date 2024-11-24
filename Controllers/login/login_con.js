@@ -13,7 +13,7 @@ const postloginData = async (req, res) => {
       if (result) {
         const token = jwt.sign(
           { user: user[0]._id, role: user[0].role },
-          "secret",
+          process.env.JWT_SECRET || "#secret",
           { expiresIn: "1h" }
         );
         res.json({

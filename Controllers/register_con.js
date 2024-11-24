@@ -35,11 +35,13 @@ const postregisterData = async (req, res) => {
         
         res.json({
           status: 200,
-          message: "Data Found all register",
+          message: "successfully register",
           data: registerAdd,
         });
     } 
     catch (error) {
+      console.log("not successfully register", error);
+      
       res.json({
           status: 404,
           error: "No Data Found"
